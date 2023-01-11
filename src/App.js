@@ -6,8 +6,6 @@ import Settings from './pages/Settings';
 
 import './App.css';
 
-// começando novo projeto [GRUPO 4]
-
 export default function App() {
   return (
     <div className="App">
