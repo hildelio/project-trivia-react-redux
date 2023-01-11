@@ -9,7 +9,7 @@ body {
 }
 
 .App-logo {
-  height: 15vmin;
+  height: 5vmin;
   pointer-events: none;
 }
 
@@ -36,7 +36,7 @@ body {
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   justify-content: center;
-  min-height: 100vh;
+  min-height: 10vh;
 }
 
 .App-link {
