@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './trivia.png';
 import './App.css';
 
+// começando novo projeto [GRUPO 4]
+
 export default function App() {
   return (
     <div className="App">
