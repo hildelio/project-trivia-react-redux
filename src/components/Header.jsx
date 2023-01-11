@@ -6,7 +6,7 @@ import logo from '../trivia.png';
 
 class Header extends Component {
   render() {
-    const { gravatarEmail, name, score } = this.props;
+    const { gravatarEmail, loginName, score } = this.props;
     return (
       <header className="App-header">
         {
@@ -18,7 +18,7 @@ class Header extends Component {
         />
         }
         {
-          name && <p data-testid="header-player-name">{name}</p>
+          loginName && <p data-testid="header-player-name">{loginName}</p>
         }
         <img src={ logo } className="App-logo" alt="logo" />
         {
@@ -33,11 +33,11 @@ class Header extends Component {
 
 Header.propTypes = {
   gravatarEmail: PropTypes.string,
-  name: PropTypes.string,
+  loginName: PropTypes.string,
 }.isRequired;
 
 const mapStateToProps = (state) => ({
-  name: state.user.name,
+  loginName: state.user.loginName,
   gravatarEmail: state.user.gravatarEmail,
 });
 
