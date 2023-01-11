@@ -24,7 +24,7 @@ class Header extends Component {
         {
           score
             ? <p data-testid="header-score">{score}</p>
-            : <p data-testid="header-score">{0}</p>
+            : <p data-testid="header-score">{ 0 }</p>
         }
       </header>
     );
