@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { userInfo, userToken } from '../redux/actions';
+import { userInfo } from '../redux/actions';
 import { getToken } from '../services/api';
 import { saveToken } from '../services/localStorageAPI';
 import Header from '../components/Header';
@@ -38,7 +38,8 @@ class Login extends React.Component {
     const { dispatch, history } = this.props;
     dispatch(userInfo(this.state));
     const response = await getToken();
-    dispatch(userToken(response.token));
+    console.log(response.token);
+    // dispatch(userToken(response.token));
     saveToken(response.token);
     history.push('/game');
   };
@@ -75,7 +76,7 @@ class Login extends React.Component {
           className="login-button-submit"
           data-testid="btn-play"
         >
-          Jogar
+          Play
         </button>
 
         <button
