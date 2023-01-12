@@ -23,7 +23,7 @@ class Header extends Component {
         <img src={ logo } className="App-logo" alt="logo" />
         {
           score
-            ? <p data-testid="header-score">{score}</p>
+            ? <p data-testid="header-score">{ score }</p>
             : <p data-testid="header-score">{ 0 }</p>
         }
       </header>
