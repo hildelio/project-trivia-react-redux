@@ -77,7 +77,7 @@ describe('Testa o componente <Login.js />', () => {
     await waitFor(() => {
       expect(pathname).toBe('/settings');
     });
-
+    
     const settings = screen.getByText(/Settings/i);
     expect(settings).toBeInTheDocument();
   });
