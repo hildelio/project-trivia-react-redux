@@ -1,6 +1,7 @@
-import { ALTERNATIVES, QUESTIONS } from '../actions';
+import { ALTERNATIVES, QUESTIONS, QUESTION_RESULT, NEXT_QUESTION } from '../actions';
 
 const INITIAL_STATE = {
+  isDisabled: false,
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {
@@ -17,6 +18,16 @@ const gameReducer = (state = INITIAL_STATE, action) => {
       alternatives: action.payload,
     };
   }
+  case QUESTION_RESULT:
+    return {
+      ...state,
+      isDisabled: true,
+    };
+  case NEXT_QUESTION:
+    return {
+      ...state,
+      isDisabled: false,
+    };
   default: return state;
   }
 };

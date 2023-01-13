@@ -25,3 +25,15 @@ export const gameAlternatives = (alternatives) => ({
   type: ALTERNATIVES,
   payload: alternatives,
 });
+
+export const QUESTION_RESULT = 'QUESTION_RESULT';
+
+export const questionResultAction = () => ({
+  type: QUESTION_RESULT,
+});
+
+export const NEXT_QUESTION = 'NEXT_QUESTION';
+
+export const nextQuestionAction = () => ({
+  type: NEXT_QUESTION,
+});
