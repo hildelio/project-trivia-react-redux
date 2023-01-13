@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { questionResultAction } from '../redux/actions';
 import '../App.css';
+import Timer from './Timer';
 
 class QuestionCard extends Component {
   handleClickAnswer = () => {
@@ -11,7 +12,7 @@ class QuestionCard extends Component {
   };
 
   render() {
-    const { question, allAnswers, isDisabled } = this.props;
+    const { props: { question, allAnswers, isDisabled } } = this;
     const num = 0.5;
     return (
       <div>
@@ -20,21 +21,20 @@ class QuestionCard extends Component {
           {question.question}
         </p>
         <section data-testid="answer-options">
-          {
-            allAnswers.sort(() => num - Math.random()).map((answer) => (
-              <button
-                data-testid={ answer.data }
-                key={ answer.text }
-                type="button"
-                disabled={ isDisabled }
-                className={ isDisabled ? `btn-answer ${answer.data}` : 'all-btn' }
-                onClick={ () => this.handleClickAnswer() }
-              >
-                {answer.text}
+          <Timer />
+          { allAnswers.sort(() => num - Math.random()).map((answer) => (
+            <button
+              data-testid={ answer.data }
+              key={ answer.text }
+              type="button"
+              disabled={ isDisabled }
+              className={ isDisabled ? `btn-answer ${answer.data}` : 'all-btn' }
+              onClick={ () => this.handleClickAnswer() }
+            >
+              {answer.text}
 
-              </button>
-            ))
-          }
+            </button>
+          ))}
         </section>
       </div>
     );

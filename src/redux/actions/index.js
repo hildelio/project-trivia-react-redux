@@ -37,3 +37,16 @@ export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const nextQuestionAction = () => ({
   type: NEXT_QUESTION,
 });
+
+export const FINISHED = 'FINISHED';
+export const INIT = 'INIT';
+
+export const timerOverAction = (payload) => ({
+  type: FINISHED,
+  payload,
+});
+
+export const timerInitAction = (payload) => ({
+  type: INIT,
+  payload,
+});

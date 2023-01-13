@@ -1,7 +1,10 @@
-import { ALTERNATIVES, QUESTIONS, QUESTION_RESULT, NEXT_QUESTION } from '../actions';
+import { ALTERNATIVES,
+  QUESTIONS, QUESTION_RESULT, NEXT_QUESTION, INIT, FINISHED } from '../actions';
 
 const INITIAL_STATE = {
   isDisabled: false,
+  timerOver: false,
+  seconds: 30,
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {
@@ -27,6 +30,17 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       isDisabled: false,
+    };
+  case INIT:
+    return {
+      ...state,
+      timerOver: action.payload.timerOver,
+    };
+  case FINISHED:
+    return {
+      ...state,
+      timerOver: action.payload.timerOver,
+      seconds: action.payload.seconds,
     };
   default: return state;
   }
