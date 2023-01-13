@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userInfo } from '../redux/actions';
 import { getTokenAPI } from '../services/api';
-import { saveToken } from '../services/localStorageAPI';
+import { saveRanking, saveToken } from '../services/localStorageAPI';
 import Header from '../components/Header';
 
 class Login extends React.Component {
@@ -38,8 +38,21 @@ class Login extends React.Component {
     const { dispatch, history } = this.props;
     dispatch(userInfo(this.state));
     const response = await getTokenAPI();
-    console.log(response.token);
     // dispatch(userToken(response.token));
+    // const { loginName, gravatarEmail } = this.state;
+    // this.setState({
+    //   ranking: [
+    //     {
+    //       name: loginName,
+    //       gravatarEmail,
+    //     },
+    //   ],
+    // }, () => {
+    //   const { ranking } = this.state;
+    //   console.log(ranking);
+    //   saveRanking(ranking);
+    // });
+    saveRanking({ ranking: [{ name: 'teste', score: 999, email: 'teste@mail' }] });
     saveToken(response.token);
     history.push('/game');
   };
@@ -86,7 +99,6 @@ class Login extends React.Component {
         >
           Configurações
         </button>
-
       </div>
     );
   }
