@@ -18,6 +18,5 @@ describe('Testa o componente <Feedback.jsx />', () => {
     expect(score).toBeInTheDocument();
     const total = getByTestId('feedback-total-question');
     expect(total).toBeInTheDocument();
-
   });
 });
