@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { questionResultAction } from '../redux/actions';
+import '../App.css';
 
 class QuestionCard extends Component {
+  handleClickAnswer = () => {
+    const { questionResultDispatch } = this.props;
+    questionResultDispatch();
+  };
+
   render() {
-    const { question, allAnswers } = this.props;
+    const { question, allAnswers, isDisabled } = this.props;
     const num = 0.5;
     return (
       <div>
@@ -18,6 +26,9 @@ class QuestionCard extends Component {
                 data-testid={ answer.data }
                 key={ answer.text }
                 type="button"
+                disabled={ isDisabled }
+                className={ isDisabled ? `btn-answer ${answer.data}` : 'all-btn' }
+                onClick={ () => this.handleClickAnswer() }
               >
                 {answer.text}
 
@@ -30,6 +41,14 @@ class QuestionCard extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  questionResultDispatch: () => dispatch(questionResultAction()),
+});
+
+const mapStateToProps = (state) => ({
+  isDisabled: state.game.isDisabled,
+});
+
 QuestionCard.propTypes = {
   question: PropTypes.shape({
     category: PropTypes.string,
@@ -38,6 +57,8 @@ QuestionCard.propTypes = {
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   allAnswers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isDisabled: PropTypes.bool.isRequired,
+  questionResultDispatch: PropTypes.func.isRequired,
 };
 
-export default QuestionCard;
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);

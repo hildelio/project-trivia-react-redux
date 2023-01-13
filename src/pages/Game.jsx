@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { getQuestions } from '../services/api';
 import QuestionCard from '../components/QuestionCard';
 import { getToken } from '../services/localStorageAPI';
+import { nextQuestionAction } from '../redux/actions/index';
 
 class Game extends Component {
   state = {
@@ -41,8 +43,22 @@ class Game extends Component {
     console.log(newArr);
   };
 
+  nextQuestion = () => {
+    const maxIndex = 4;
+    const { index } = this.state;
+    const { nextQuestionDispatch } = this.props;
+    nextQuestionDispatch();
+    if (index < maxIndex) {
+      this.setState((prevState) => ({
+        ...prevState,
+        index: prevState.index + 1,
+      }));
+    }
+  };
+
   render() {
     const { questions, index } = this.state;
+    const { isDisabled } = this.props;
     return (
       <div>
         <Header />
@@ -55,15 +71,36 @@ class Game extends Component {
           }
 
         </section>
+        <div>
+          { isDisabled && (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ () => this.nextQuestion() }
+            >
+              Next
+            </button>
+          )}
+        </div>
       </div>
     );
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  nextQuestionDispatch: () => dispatch(nextQuestionAction()),
+});
+
+const mapStateToProps = (state) => ({
+  isDisabled: state.game.isDisabled,
+});
+
 Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  isDisabled: PropTypes.bool.isRequired,
+  nextQuestionDispatch: PropTypes.func.isRequired,
 };
 
-export default Game;
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
