@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { getQuestions } from '../services/api';
 import QuestionCard from '../components/QuestionCard';
+import { getToken } from '../services/localStorageAPI';
 
 class Game extends Component {
   state = {
@@ -12,7 +13,7 @@ class Game extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    const token = JSON.parse(localStorage.getItem('token'));
+    const token = getToken();
     const { results } = await getQuestions(token);
     if (results.length === 0) {
       localStorage.removeItem('token');
