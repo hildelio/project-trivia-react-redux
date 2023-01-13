@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userInfo } from '../redux/actions';
-import { getToken } from '../services/api';
+import { getTokenAPI } from '../services/api';
 import { saveToken } from '../services/localStorageAPI';
 import Header from '../components/Header';
 
@@ -37,7 +37,7 @@ class Login extends React.Component {
   handleClick = async () => {
     const { dispatch, history } = this.props;
     dispatch(userInfo(this.state));
-    const response = await getToken();
+    const response = await getTokenAPI();
     console.log(response.token);
     // dispatch(userToken(response.token));
     saveToken(response.token);

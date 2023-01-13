@@ -1,4 +1,4 @@
-export async function getToken() {
+export async function getTokenAPI() {
   const url = 'https://opentdb.com/api_token.php?command=request';
   const token = await fetch(url);
   const response = await token.json();
