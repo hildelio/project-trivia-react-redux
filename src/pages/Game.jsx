@@ -40,7 +40,6 @@ class Game extends Component {
     this.setState({
       questions: newArr,
     });
-    console.log(newArr);
   };
 
   nextQuestion = () => {
@@ -58,10 +57,17 @@ class Game extends Component {
 
   render() {
     const { questions, index } = this.state;
-    const { isDisabled } = this.props;
+    const { isDisabled, history } = this.props;
     return (
       <div>
         <Header />
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => history.push('/ranking') }
+        >
+          Ranking
+        </button>
         <section>
           {
             questions.length > 0 && <QuestionCard
