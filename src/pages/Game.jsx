@@ -5,7 +5,8 @@ import Header from '../components/Header';
 import { getQuestions } from '../services/api';
 import QuestionCard from '../components/QuestionCard';
 import { getToken } from '../services/localStorageAPI';
-import { nextQuestionAction } from '../redux/actions/index';
+import { gameAlternatives,
+  nextQuestionAction, timerOverAction } from '../redux/actions/index';
 
 class Game extends Component {
   state = {
@@ -14,7 +15,7 @@ class Game extends Component {
   };
 
   async componentDidMount() {
-    const { history } = this.props;
+    const { props: { history } } = this;
     const token = getToken();
     const { results } = await getQuestions(token);
     if (results.length === 0) {
@@ -26,38 +27,58 @@ class Game extends Component {
   }
 
   makeRandomAnswersList = (questions) => {
+    const { props: { allQuestions } } = this;
+    const num = 0.5;
     const newArr = questions.map((question) => {
+      const informations = {
+        category: question.category,
+        type: question.type,
+        difficulty: question.difficulty,
+        question: question.question,
+      };
+      // criado novo parâmetro informations, reformulando os dados
       const allAnswers = [{ text: question.correct_answer,
         data: 'correct-answer',
-        isCorrect: true },
+        isCorrect: true,
+        difficulty: question.difficulty,
+      },
       ...question.incorrect_answers.map((ans, idx) => ({
-        text: ans, data: `wrong-answer-${idx}`, isCorrect: false }))];
+        text: ans,
+        data: `wrong-answer-${idx}`,
+        isCorrect: false,
+        difficulty: question.difficulty,
+      }))];
       return {
-        ...question,
-        allAnswers,
+        informations,
+        allAnswers: allAnswers.sort(() => num - Math.random()),
+        // sort agora fica direto no all answers para não atrapalhar o did update do timer
       };
     });
+    // as alternativas vão para o Redux
     this.setState({
       questions: newArr,
     });
+    allQuestions(newArr);
   };
 
   nextQuestion = () => {
     const maxIndex = 4;
     const { index } = this.state;
-    const { nextQuestionDispatch } = this.props;
-    nextQuestionDispatch();
+    const { nextQuestionDispatch, timeOver, history } = this.props;
     if (index < maxIndex) {
       this.setState((prevState) => ({
         ...prevState,
         index: prevState.index + 1,
-      }));
+      }), () => nextQuestionDispatch());
+      timeOver({ timeOver: false, seconds: 30 });
+    }
+    if (index === maxIndex) {
+      history.push('/feedback');
     }
   };
 
   render() {
-    const { questions, index } = this.state;
-    const { isDisabled, history } = this.props;
+    const { state: { questions, index }, props: { isDisabled, history } } = this;
     return (
       <div>
         <Header />
@@ -70,10 +91,7 @@ class Game extends Component {
         </button>
         <section>
           {
-            questions.length > 0 && <QuestionCard
-              question={ questions[index] }
-              allAnswers={ questions[index].allAnswers }
-            />
+            questions.length > 0 && <QuestionCard index={ index } />
           }
 
         </section>
@@ -94,6 +112,8 @@ class Game extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  allQuestions: (questions) => dispatch(gameAlternatives(questions)),
+  timeOver: (payload) => dispatch(timerOverAction(payload)),
   nextQuestionDispatch: () => dispatch(nextQuestionAction()),
 });
 
@@ -107,6 +127,12 @@ Game.propTypes = {
   }).isRequired,
   isDisabled: PropTypes.bool.isRequired,
   nextQuestionDispatch: PropTypes.func.isRequired,
+  allQuestions: PropTypes.func.isRequired,
+  timeOver: PropTypes.func.isRequired,
+  // shape({
+  //   timeOver: PropTypes.bool.isRequired,
+  //   seconds: PropTypes.number.isRequired,
+  // }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

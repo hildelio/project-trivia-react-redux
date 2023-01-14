@@ -34,19 +34,27 @@ export const questionResultAction = () => ({
 
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 
-export const nextQuestionAction = () => ({
+export const nextQuestionAction = (payload) => ({
   type: NEXT_QUESTION,
+  payload,
 });
 
 export const FINISHED = 'FINISHED';
-export const INIT = 'INIT';
 
 export const timerOverAction = (payload) => ({
   type: FINISHED,
   payload,
 });
 
+export const INIT = 'INIT';
 export const timerInitAction = (payload) => ({
   type: INIT,
   payload,
+});
+
+export const ADD_SCORE = 'ADD_SCORE';
+
+export const addScore = (score) => ({
+  type: ADD_SCORE,
+  payload: { score },
 });

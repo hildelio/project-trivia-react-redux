@@ -8,17 +8,13 @@ class Timer extends Component {
   };
 
   componentDidMount() {
-    const ONE_SECOND = 1000;
-    this.timerID = setInterval(() => {
-      this.setState((prevState) => ({
-        seconds: prevState.seconds - 1,
-      }));
-    }, ONE_SECOND);
+    this.handleTimer();
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    const { props: { timeOver, questionResultDispatch } } = this;
+    const { props: { timeOver, questionResultDispatch, isRunning } } = this;
     const TIME_LIMIT = 1;
+    if (!isRunning) clearInterval(this.timerID);
 
     timeOver({
       timerOver: false,
@@ -39,11 +35,20 @@ class Timer extends Component {
     clearInterval(this.timerID);
   }
 
+  handleTimer = () => {
+    const ONE_SECOND = 1000;
+    this.timerID = setInterval(() => {
+      this.setState((prevState) => ({
+        seconds: prevState.seconds - 1,
+      }));
+    }, ONE_SECOND);
+    console.log(this.timerID);
+  };
+
   render() {
     const { state: { seconds } } = this;
     return (
-      <div data-test>
-        Timer
+      <div>
         {seconds}
       </div>
     );
@@ -51,7 +56,7 @@ class Timer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  idDisabled: state.game.idDisabled,
+  idDisabled: state.game.isDisabled,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,6 +1,10 @@
-import { TOKEN, USER_INFO } from '../actions';
+import { TOKEN, USER_INFO, ADD_SCORE } from '../actions';
 
 const INITIAL_STATE = {
+  name: '',
+  assertions: 0,
+  score: 0,
+  gravatarEmail: '',
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -17,6 +21,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
       token: action.payload,
     };
   }
+  case ADD_SCORE:
+    return {
+      ...state,
+      score: state.score + action.payload.score,
+    };
   default: return state;
   }
 };
