@@ -38,7 +38,6 @@ class QuestionCard extends Component {
     return (
       <div>
         <h3 data-testid="question-category">{questions[index].informations.category}</h3>
-        {console.log('renderizou')}
         <p data-testid="question-text">
           {questions[index].informations.question}
         </p>

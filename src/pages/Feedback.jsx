@@ -16,6 +16,13 @@ class Feedback extends Component {
         >
           Ranking
         </button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => history.push('/') }
+        >
+          Play Again!
+        </button>
         <div>
           <span data-testid="feedback-text">
             { assertions >= minNumber ? 'Well Done!' : 'Could be better...' }
