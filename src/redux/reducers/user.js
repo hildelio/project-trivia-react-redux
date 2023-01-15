@@ -25,6 +25,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.payload.score,
+      assertions: state.assertions + action.payload.assertions,
     };
   default: return state;
   }

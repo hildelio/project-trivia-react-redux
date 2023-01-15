@@ -24,7 +24,10 @@ class QuestionCard extends Component {
         medium: 2,
         easy: 1,
       };
-      addScorePoints(basePoints + (Number(seconds) * Number(barrier[difficulty])));
+      addScorePoints({ score: basePoints
+        + (Number(seconds) * Number(barrier[difficulty])),
+      assertions: barrier.easy,
+      });
     }
     this.setState({ isRunning: false });
     questionResultDispatch();
