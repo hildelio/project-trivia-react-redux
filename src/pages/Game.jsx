@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { MD5 } from 'crypto-js';
 import Header from '../components/Header';
 import { getQuestions } from '../services/api';
 import QuestionCard from '../components/QuestionCard';
-import { getToken } from '../services/localStorageAPI';
+import { getToken, saveRanking } from '../services/localStorageAPI';
 import { gameAlternatives,
-  nextQuestionAction, timerOverAction } from '../redux/actions/index';
+  nextQuestionAction, timerOverAction, userInfo } from '../redux/actions/index';
 
 class Game extends Component {
   state = {
@@ -63,8 +64,8 @@ class Game extends Component {
 
   nextQuestion = () => {
     const maxIndex = 4;
-    const { index } = this.state;
-    const { nextQuestionDispatch, timeOver, history } = this.props;
+    const { state: { index }, props: { nextQuestionDispatch, timeOver, history,
+      gravatarEmail, score, loginName, userInfoEmpty } } = this;
     if (index < maxIndex) {
       this.setState((prevState) => ({
         ...prevState,
@@ -73,6 +74,12 @@ class Game extends Component {
       timeOver({ timeOver: false, seconds: 30 });
     }
     if (index === maxIndex) {
+      saveRanking({
+        name: loginName,
+        score,
+        email: `https://www.gravatar.com/avatar/${MD5(gravatarEmail).toString()}` });
+      userInfoEmpty({ loginName: '', gravatarEmail: '', score: 0 });
+      nextQuestionDispatch();
       history.push('/feedback');
     }
   };
@@ -115,10 +122,14 @@ const mapDispatchToProps = (dispatch) => ({
   allQuestions: (questions) => dispatch(gameAlternatives(questions)),
   timeOver: (payload) => dispatch(timerOverAction(payload)),
   nextQuestionDispatch: () => dispatch(nextQuestionAction()),
+  userInfoEmpty: (info) => dispatch(userInfo(info)),
 });
 
-const mapStateToProps = (state) => ({
-  isDisabled: state.game.isDisabled,
+const mapStateToProps = ({ game, player }) => ({
+  isDisabled: game.isDisabled,
+  gravatarEmail: player.gravatarEmail,
+  loginName: player.loginName,
+  score: player.score,
 });
 
 Game.propTypes = {
@@ -127,12 +138,12 @@ Game.propTypes = {
   }).isRequired,
   isDisabled: PropTypes.bool.isRequired,
   nextQuestionDispatch: PropTypes.func.isRequired,
+  userInfoEmpty: PropTypes.func.isRequired,
   allQuestions: PropTypes.func.isRequired,
   timeOver: PropTypes.func.isRequired,
-  // shape({
-  //   timeOver: PropTypes.bool.isRequired,
-  //   seconds: PropTypes.number.isRequired,
-  // }).isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  loginName: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

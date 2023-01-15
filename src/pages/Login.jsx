@@ -39,7 +39,7 @@ class Login extends React.Component {
     dispatch(userInfo(this.state));
     const response = await getTokenAPI();
     // dispatch(userToken(response.token));
-    const { loginName, gravatarEmail } = this.state;
+    // const { loginName, gravatarEmail } = this.state;
     // this.setState({
     //   ranking: [
     //     {
@@ -52,7 +52,7 @@ class Login extends React.Component {
     //   console.log(ranking);
     //   saveRanking(ranking);
     // });
-    saveRanking({ ranking: [{ name: loginName, score: 0, email: gravatarEmail }] });
+    // saveRanking({ ranking: [{ name: loginName, score: 0, email: gravatarEmail }] });
     saveToken(response.token);
     history.push('/game');
   };
