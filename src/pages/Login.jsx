@@ -38,21 +38,6 @@ class Login extends React.Component {
     const { dispatch, history } = this.props;
     dispatch(userInfo(this.state));
     const response = await getTokenAPI();
-    // dispatch(userToken(response.token));
-    // const { loginName, gravatarEmail } = this.state;
-    // this.setState({
-    //   ranking: [
-    //     {
-    //       name: loginName,
-    //       gravatarEmail,
-    //     },
-    //   ],
-    // }, () => {
-    //   const { ranking } = this.state;
-    //   console.log(ranking);
-    //   saveRanking(ranking);
-    // });
-    // saveRanking({ ranking: [{ name: loginName, score: 0, email: gravatarEmail }] });
     saveToken(response.token);
     history.push('/game');
   };
@@ -62,7 +47,7 @@ class Login extends React.Component {
     const { history } = this.props;
     return (
       <div className="login-container">
-        <Header />
+        {/* <Header /> */}
         <input
           type="text"
           data-testid="input-player-name"
