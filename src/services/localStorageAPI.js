@@ -14,6 +14,5 @@ export const saveRanking = (results) => {
   const ranking = getRankingStorage();
   const newArr = [...ranking, results];
   console.log(ranking);
-  // currentRanking.push(results);
   localStorage.setItem(rankingKey, JSON.stringify(newArr));
 };
