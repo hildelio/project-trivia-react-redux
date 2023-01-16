@@ -3,9 +3,19 @@ import PropTypes from 'prop-types';
 import { getRankingStorage } from '../services/localStorageAPI';
 
 class Ranking extends Component {
+  state = {
+    ranking: [],
+  };
+
+  componentDidMount() {
+    const ranking = getRankingStorage();
+    const byOrder = ranking.sort((a, b) => b.score - a.score);
+    console.log(ranking, byOrder);
+    this.setState({ ranking: byOrder });
+  }
+
   render() {
-    const { ranking } = getRankingStorage() || [];
-    const { history } = this.props;
+    const { props: { history }, state: { ranking } } = this;
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
@@ -18,17 +28,11 @@ class Ranking extends Component {
         </button>
         {
           ranking && ranking.map((e, index) => (
-            <p
-              key={ e.name }
-              data-testid={ `player-name-${index}` }
-            >
-              {e.name}
-            </p>
-          ))
-        }
-        {
-          ranking && ranking.map((e, index) => (
-            <p key={ e.name } data-testid={ `player-score-${index}` }>{e.score}</p>
+            <div key={ `${e.name}-${index}` }>
+              <img src={ e.email } alt={ `gravatar${e.name}-${index}` } />
+              <p data-testid={ `player-name-${index}` }>{e.name}</p>
+              <p data-testid={ `player-score-${index}` }>{e.score}</p>
+            </div>
           ))
         }
       </div>

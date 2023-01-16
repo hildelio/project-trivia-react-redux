@@ -5,7 +5,14 @@ export const saveToken = (token) => localStorage.setItem(tokenKey, token);
 
 export const getToken = () => localStorage.getItem(tokenKey);
 
-export const saveRanking = (ranking) => (
-  localStorage.setItem(rankingKey, JSON.stringify(ranking)));
+export const getRankingStorage = () => {
+  const currentRanking = JSON.parse(localStorage.getItem(rankingKey)) || [];
+  return currentRanking;
+};
 
-export const getRankingStorage = () => JSON.parse(localStorage.getItem(rankingKey));
+export const saveRanking = (results) => {
+  const ranking = getRankingStorage();
+  const newArr = [...ranking, results];
+  console.log(ranking);
+  localStorage.setItem(rankingKey, JSON.stringify(newArr));
+};
