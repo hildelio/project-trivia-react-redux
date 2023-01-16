@@ -35,15 +35,7 @@ class Timer extends Component {
     clearInterval(this.timerID);
   }
 
-  handleTimer = () => {
-    const ONE_SECOND = 1000;
-    this.timerID = setInterval(() => {
-      this.setState((prevState) => ({
-        seconds: prevState.seconds - 1,
-      }));
-    }, ONE_SECOND);
-    console.log(this.timerID);
-  };
+  
 
   render() {
     const { state: { seconds } } = this;

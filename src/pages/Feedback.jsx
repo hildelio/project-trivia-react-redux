@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { resetUser } from '../redux/actions';
 
 class Feedback extends Component {
   render() {
-    const { props: { score, assertions, history } } = this;
+    const { props: { score, assertions, history, dispatch } } = this;
     const minNumber = 3;
     return (
       <div>
@@ -19,7 +20,10 @@ class Feedback extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
+          onClick={ () => {
+            dispatch(resetUser());
+            history.push('/');
+          } }
         >
           Play Again!
         </button>

@@ -58,3 +58,9 @@ export const addScore = (payload) => ({
   type: ADD_SCORE,
   payload,
 });
+
+export const RESET_USER = 'RESET_USER';
+
+export const resetUser = () => ({
+  type: RESET_USER,
+});

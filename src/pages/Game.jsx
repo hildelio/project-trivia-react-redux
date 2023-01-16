@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MD5 } from 'crypto-js';
 import Header from '../components/Header';
 import { getQuestions } from '../services/api';
 import QuestionCard from '../components/QuestionCard';
-import { getToken, saveRanking } from '../services/localStorageAPI';
-import { gameAlternatives,
-  nextQuestionAction, timerOverAction } from '../redux/actions/index';
+import { getToken } from '../services/localStorageAPI';
+import { gameAlternatives, timerOverAction } from '../redux/actions/index';
 
 class Game extends Component {
   state = {
     questions: [],
-    index: 0,
   };
 
   async componentDidMount() {
@@ -62,29 +58,8 @@ class Game extends Component {
     allQuestions(newArr);
   };
 
-  nextQuestion = () => {
-    const maxIndex = 4;
-    const { state: { index }, props: { nextQuestionDispatch, timeOver, history,
-      gravatarEmail, score, loginName } } = this;
-    if (index < maxIndex) {
-      this.setState((prevState) => ({
-        ...prevState,
-        index: prevState.index + 1,
-      }), () => nextQuestionDispatch());
-      timeOver({ timeOver: false, seconds: 30 });
-    }
-    if (index === maxIndex) {
-      saveRanking({
-        name: loginName,
-        score,
-        email: `https://www.gravatar.com/avatar/${MD5(gravatarEmail).toString()}` });
-      nextQuestionDispatch();
-      history.push('/feedback');
-    }
-  };
-
   render() {
-    const { state: { questions, index }, props: { isDisabled, history } } = this;
+    const { state: { questions }, props: { history } } = this;
     return (
       <div>
         <Header />
@@ -96,22 +71,8 @@ class Game extends Component {
           Ranking
         </button>
         <section>
-          {
-            questions.length > 0 && <QuestionCard index={ index } />
-          }
-
+          { questions.length > 0 && <QuestionCard /> }
         </section>
-        <div>
-          { isDisabled && (
-            <button
-              type="button"
-              data-testid="btn-next"
-              onClick={ () => this.nextQuestion() }
-            >
-              Next
-            </button>
-          )}
-        </div>
       </div>
     );
   }
@@ -120,7 +81,6 @@ class Game extends Component {
 const mapDispatchToProps = (dispatch) => ({
   allQuestions: (questions) => dispatch(gameAlternatives(questions)),
   timeOver: (payload) => dispatch(timerOverAction(payload)),
-  nextQuestionDispatch: () => dispatch(nextQuestionAction()),
 });
 
 const mapStateToProps = ({ game, player }) => ({
@@ -130,17 +90,6 @@ const mapStateToProps = ({ game, player }) => ({
   score: player.score,
 });
 
-Game.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  isDisabled: PropTypes.bool.isRequired,
-  nextQuestionDispatch: PropTypes.func.isRequired,
-  allQuestions: PropTypes.func.isRequired,
-  timeOver: PropTypes.func.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
-  loginName: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
-};
+Game.propTypes = {}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

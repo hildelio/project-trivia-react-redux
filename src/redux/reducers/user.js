@@ -1,4 +1,4 @@
-import { TOKEN, USER_INFO, ADD_SCORE } from '../actions';
+import { TOKEN, USER_INFO, ADD_SCORE, RESET_USER } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -26,6 +26,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
       ...state,
       score: state.score + action.payload.score,
       assertions: state.assertions + action.payload.assertions,
+    };
+  case RESET_USER:
+    console.log('arroz');
+    return {
+      name: '',
+      assertions: 0,
+      score: 0,
+      gravatarEmail: '',
     };
   default: return state;
   }
