@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userInfo } from '../redux/actions';
 import { getTokenAPI } from '../services/api';
-import { saveRanking, saveToken } from '../services/localStorageAPI';
-import Header from '../components/Header';
+import { saveToken } from '../services/localStorageAPI';
 
 class Login extends React.Component {
   state = {
