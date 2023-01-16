@@ -1,10 +1,11 @@
-import { ALTERNATIVES,
-  QUESTIONS, QUESTION_RESULT, NEXT_QUESTION, INIT, FINISHED } from '../actions';
+import { ALTERNATIVES, QUESTIONS, QUESTION_RESULT,
+  NEXT_QUESTION, INIT, FINISHED } from '../actions';
 
 const INITIAL_STATE = {
   isDisabled: false,
   timerOver: false,
   seconds: 30,
+  questions: [],
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {

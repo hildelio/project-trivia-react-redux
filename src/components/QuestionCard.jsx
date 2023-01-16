@@ -1,35 +1,58 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { questionResultAction } from '../redux/actions';
+import { questionResultAction, addScore } from '../redux/actions';
 import '../App.css';
 import Timer from './Timer';
 
 class QuestionCard extends Component {
-  handleClickAnswer = () => {
-    const { questionResultDispatch } = this.props;
+  state = {
+    isRunning: true,
+  };
+
+  componentDidMount() {
+    const { props: isDisabled } = this;
+    if (isDisabled) this.setState({ isRunning: true });
+  }
+
+  handleClickAnswer = (e) => {
+    const { questionResultDispatch, seconds, addScorePoints } = this.props;
+    if (e.target.attributes['data-testid'].value.includes('correct-answer')) {
+      const difficulty = e.target.attributes.difficulty.value;
+      const basePoints = 10;
+      const barrier = {
+        hard: 3,
+        medium: 2,
+        easy: 1,
+      };
+      addScorePoints({ score: basePoints
+        + (Number(seconds) * Number(barrier[difficulty])),
+      assertions: barrier.easy,
+      });
+    }
+    this.setState({ isRunning: false });
     questionResultDispatch();
   };
 
   render() {
-    const { props: { question, allAnswers, isDisabled } } = this;
-    const num = 0.5;
+    const { props: { questions, isDisabled, index }, state: { isRunning } } = this;
     return (
       <div>
-        <h3 data-testid="question-category">{question.category}</h3>
+        <h3 data-testid="question-category">{questions[index].informations.category}</h3>
         <p data-testid="question-text">
-          {question.question}
+          {questions[index].informations.question}
         </p>
+        <div><Timer isRunning={ isRunning } /></div>
         <section data-testid="answer-options">
-          <Timer />
-          { allAnswers.sort(() => num - Math.random()).map((answer) => (
+          {/* Agora o index vem do Redux */}
+          { questions[index].allAnswers.map((answer) => (
             <button
               data-testid={ answer.data }
               key={ answer.text }
               type="button"
+              difficulty={ answer.difficulty }
               disabled={ isDisabled }
               className={ isDisabled ? `btn-answer ${answer.data}` : 'all-btn' }
-              onClick={ () => this.handleClickAnswer() }
+              onClick={ (e) => this.handleClickAnswer(e) }
             >
               {answer.text}
 
@@ -43,22 +66,15 @@ class QuestionCard extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   questionResultDispatch: () => dispatch(questionResultAction()),
+  addScorePoints: (score) => dispatch(addScore(score)),
 });
 
-const mapStateToProps = (state) => ({
-  isDisabled: state.game.isDisabled,
+const mapStateToProps = ({ game }) => ({
+  isDisabled: game.isDisabled,
+  seconds: game.seconds,
+  questions: game.alternatives,
 });
 
-QuestionCard.propTypes = {
-  question: PropTypes.shape({
-    category: PropTypes.string,
-    question: PropTypes.string,
-    correct_answer: PropTypes.string,
-    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
-  allAnswers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  isDisabled: PropTypes.bool.isRequired,
-  questionResultDispatch: PropTypes.func.isRequired,
-};
+QuestionCard.propTypes = {}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);

@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
-    const score = 11;
-    const totalQuestion = 5;
+    const { props: { score, assertions, history } } = this;
     const minNumber = 3;
     return (
       <div>
         <Header />
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => history.push('/ranking') }
+        >
+          Ranking
+        </button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => history.push('/') }
+        >
+          Play Again!
+        </button>
         <div>
           <span data-testid="feedback-text">
-            { totalQuestion >= minNumber ? 'Well Done!' : 'Could be better...' }
+            { assertions >= minNumber ? 'Well Done!' : 'Could be better...' }
           </span>
         </div>
         <div>
@@ -20,11 +34,18 @@ class Feedback extends Component {
         </div>
         <div>
           <span>Respostas corretas: </span>
-          <span data-testid="feedback-total-question">{ totalQuestion }</span>
+          <span data-testid="feedback-total-question">{ assertions }</span>
         </div>
       </div>
     );
   }
 }
 
-export default Feedback;
+const mapStateToProps = ({ player }) => ({
+  assertions: player.assertions,
+  score: player.score,
+});
+
+Feedback.propTypes = {}.isRequired;
+
+export default connect(mapStateToProps)(Feedback);
