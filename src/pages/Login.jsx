@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { userInfo } from '../redux/actions';
+import { resetUser, userInfo } from '../redux/actions';
 import { getTokenAPI } from '../services/api';
 import { saveToken } from '../services/localStorageAPI';
 
@@ -11,6 +11,11 @@ class Login extends React.Component {
     gravatarEmail: '',
     isDisabled: true,
   };
+
+  componentDidMount() {
+    const { props: { dispatch } } = this;
+    dispatch(resetUser());
+  }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
