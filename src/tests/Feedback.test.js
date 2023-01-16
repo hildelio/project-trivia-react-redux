@@ -5,6 +5,7 @@ import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import Feedback from '../pages/Feedback';
 import App from '../App';
 
+// estados para renderizar
 const initialEntries = '/feedback';
 const INITIAL_STATE = {
   player: {
