@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import { getQuestions } from '../services/api';
 import QuestionCard from '../components/QuestionCard';
 import { getToken } from '../services/localStorageAPI';
-import { gameAlternatives, timerOverAction } from '../redux/actions/index';
+import { gameAlternatives } from '../redux/actions/index';
 
 class Game extends Component {
   state = {
@@ -80,7 +80,7 @@ class Game extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   allQuestions: (questions) => dispatch(gameAlternatives(questions)),
-  timeOver: (payload) => dispatch(timerOverAction(payload)),
+//  timeOver: (payload) => dispatch(timerOverAction(payload)),
 });
 
 const mapStateToProps = ({ game, player }) => ({

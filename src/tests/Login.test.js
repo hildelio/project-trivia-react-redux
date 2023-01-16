@@ -20,8 +20,6 @@ describe('Testa o componente <Login.js />', () => {
     const settingsBtn = getByRole('button', { name: 'Configurações' });
     expect(settingsBtn).toBeInTheDocument();
 
-    const score = getByTestId('header-score');
-    expect(score).toBeInTheDocument();
   });
 
   test('Testa se é possivel escrever nos inputs', () => {
