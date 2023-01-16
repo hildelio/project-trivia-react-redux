@@ -5,7 +5,7 @@ import { getRankingStorage } from '../services/localStorageAPI';
 
 class Ranking extends Component {
   render() {
-    const { ranking } = getRankingStorage();
+    const { ranking } = getRankingStorage() || [];
     const { history } = this.props;
     return (
       <div>
