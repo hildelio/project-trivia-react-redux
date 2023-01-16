@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { resetUser } from '../redux/actions';
 
 class Feedback extends Component {
   render() {
