@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Header from '../components/Header';
 import { getRankingStorage } from '../services/localStorageAPI';
 
 class Ranking extends Component {
   render() {
-    const { ranking } = getRankingStorage();
+    const { ranking } = getRankingStorage() || [];
     const { history } = this.props;
     return (
       <div>
-        <Header />
         <h1 data-testid="ranking-title">Ranking</h1>
         <button
           type="button"
