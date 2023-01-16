@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Header from '../components/Header';
 import { getRankingStorage } from '../services/localStorageAPI';
+import Header from '../components/Header';
 
 class Ranking extends Component {
   state = {
@@ -11,8 +11,8 @@ class Ranking extends Component {
   componentDidMount() {
     const ranking = getRankingStorage();
     const byOrder = ranking.sort((a, b) => b.score - a.score);
-    console.log(byOrder);
-    this.setState({ ranking: byOrder });
+    console.log(ranking, byOrder);
+    this.setState({ ranking });
   }
 
   render() {

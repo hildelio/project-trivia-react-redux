@@ -7,7 +7,7 @@ import { getQuestions } from '../services/api';
 import QuestionCard from '../components/QuestionCard';
 import { getToken, saveRanking } from '../services/localStorageAPI';
 import { gameAlternatives,
-  nextQuestionAction, timerOverAction, userInfo } from '../redux/actions/index';
+  nextQuestionAction, timerOverAction } from '../redux/actions/index';
 
 class Game extends Component {
   state = {
@@ -65,7 +65,7 @@ class Game extends Component {
   nextQuestion = () => {
     const maxIndex = 4;
     const { state: { index }, props: { nextQuestionDispatch, timeOver, history,
-      gravatarEmail, score, loginName, userInfoEmpty } } = this;
+      gravatarEmail, score, loginName } } = this;
     if (index < maxIndex) {
       this.setState((prevState) => ({
         ...prevState,
@@ -78,7 +78,6 @@ class Game extends Component {
         name: loginName,
         score,
         email: `https://www.gravatar.com/avatar/${MD5(gravatarEmail).toString()}` });
-      userInfoEmpty({ loginName: '', gravatarEmail: '', score: 0 });
       nextQuestionDispatch();
       history.push('/feedback');
     }
@@ -122,7 +121,6 @@ const mapDispatchToProps = (dispatch) => ({
   allQuestions: (questions) => dispatch(gameAlternatives(questions)),
   timeOver: (payload) => dispatch(timerOverAction(payload)),
   nextQuestionDispatch: () => dispatch(nextQuestionAction()),
-  userInfoEmpty: (info) => dispatch(userInfo(info)),
 });
 
 const mapStateToProps = ({ game, player }) => ({
@@ -138,7 +136,6 @@ Game.propTypes = {
   }).isRequired,
   isDisabled: PropTypes.bool.isRequired,
   nextQuestionDispatch: PropTypes.func.isRequired,
-  userInfoEmpty: PropTypes.func.isRequired,
   allQuestions: PropTypes.func.isRequired,
   timeOver: PropTypes.func.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
