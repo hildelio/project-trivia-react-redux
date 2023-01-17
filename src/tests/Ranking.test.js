@@ -5,6 +5,30 @@ import userEvent from '@testing-library/user-event';
 import { initialEntries, INITIAL_STATE, mock } from './Game.test';
 import App from '../App';
 
+export const INITIAL_STATE_TEST = {
+  player: {
+  name: 'Hildélio',
+  assertions: 2,
+  score: 136,
+  gravatarEmail: 'luizapogura@gmail.com',
+  }
+};
+
+const mockRanking = [
+{
+  name: "Hildélio",
+  score: 136,
+  email: "https://www.gravatar.com/avatar/105228ca9f8582f3d8f596b9634f65b7"
+},
+{
+  name: "Segundo",
+  score: 16,
+  email: "https://www.gravatar.com/avatar/105228ca9f8582f3d8f596b9634f65b7"
+}
+]
+
+window.localStorage.setItem('ranking', JSON.stringify(mockRanking))
+
 describe('Testa o componente <Ranking.jsx />', () => {
   
   test('Testa se a página de Ranking é carregada', async () => {
@@ -13,7 +37,7 @@ describe('Testa o componente <Ranking.jsx />', () => {
           json: jest.fn().mockResolvedValue(mock)
       })
 
-    const {history} = renderWithRouterAndRedux(<App />, INITIAL_STATE, initialEntries);
+    const {history} = renderWithRouterAndRedux(<App />, INITIAL_STATE_TEST, initialEntries);
     expect(history.location.pathname).toBe('/game');
     expect(global.fetch).toHaveBeenCalled();
 
@@ -48,18 +72,18 @@ describe('Testa o componente <Ranking.jsx />', () => {
     const title = screen.getByRole('heading', {  name: /ranking/i})
     expect(title).toBeInTheDocument();
     
-    const containerRanking = screen.findByRole('listitem');
-    expect(containerRanking).toBeDefined()
-
-
-    // const avatarPlayer = await screen.findByAltText(/gravatar/i)
-    // expect(avatarPlayer).toBeInTheDocument();
-    // const avatarPlayer = await screen.findByAltText(/gravatar/i);
+    const listPlayer = screen.getAllByRole('listitem');
+    expect(listPlayer).toHaveLength(2);
+       
+    // const avatarPlayer = screen.getByRole('img', {name: /gravatar/i})
     // const namePlayer = await screen.findByTestId(/player-name/i)
     // const scorePlayer = await screen.findByTestId(/player-score/i)
     // expect(avatarPlayer).toBeInTheDocument()
     // expect(namePlayer).toBeInTheDocument()
     // expect(scorePlayer).toBeInTheDocument()
+
+    // const firstPlace = await screen.findAllByTestId(/player-name-0/i)
+    // expect(firstPlace).toEqual('Hildélio'); 
     
     const buttonStart = screen.getByRole('button', {  name: /início/i})
     userEvent.click(buttonStart)

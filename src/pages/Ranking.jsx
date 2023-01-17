@@ -28,10 +28,13 @@ class Ranking extends Component {
         </button>
         {
           ranking && ranking.map((e, index) => (
-            <div key={ `${e.name}-${index}` } role="listitem" aria-hidden="true">
+            <div key={ `${e.name}-${index}` } role="listitem">
               <img src={ e.email } alt={ `gravatar${e.name}-${index}` } />
               <p data-testid={ `player-name-${index}` }>{e.name}</p>
-              <p data-testid={ `player-score-${index}` }>{e.score}</p>
+              <p>
+                {'Score: '}
+                <span data-testid={ `player-score-${index}` }>{e.score}</span>
+              </p>
             </div>
           ))
         }
