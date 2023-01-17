@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 
-const initialEntries = '/game';
-const INITIAL_STATE = {
+export const initialEntries = '/game';
+export const INITIAL_STATE = {
   player: {
   name: 'Luiza',
   assertions: 0,
@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   }
 };
 
-const mock = {
+export const mock = {
   response_code: 0,
   results: [
     {category:"Geography",
