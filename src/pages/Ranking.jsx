@@ -9,7 +9,7 @@ class Ranking extends Component {
 
   componentDidMount() {
     const ranking = getRankingStorage();
-    const byOrder = ranking.sort((a, b) => b.score - a.score);
+    const byOrder = ranking.sort(({ score }, { score: nextScore }) => nextScore - score);
     console.log(ranking, byOrder);
     this.setState({ ranking: byOrder });
   }
@@ -28,7 +28,7 @@ class Ranking extends Component {
         </button>
         {
           ranking && ranking.map((e, index) => (
-            <div key={ `${e.name}-${index}` }>
+            <div key={ `${e.name}-${index}` } role="listitem" aria-hidden="true">
               <img src={ e.email } alt={ `gravatar${e.name}-${index}` } />
               <p data-testid={ `player-name-${index}` }>{e.name}</p>
               <p data-testid={ `player-score-${index}` }>{e.score}</p>

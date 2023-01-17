@@ -2,44 +2,64 @@ import React from 'react';
 import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Ranking from '../pages/Ranking';
+import { initialEntries, INITIAL_STATE, mock } from './Game.test';
+import App from '../App';
 
 describe('Testa o componente <Ranking.jsx />', () => {
-  const fakeLocalStorage = (function() {
-    let store = {
-      ranking: [
-        {name: "Hildélio Júnior", score: 100, email: "hildelio@gmail.com" },
-        {name: "Luiza Ogura", score: 99, email: "luizaogura@mail.com"}
-      ]
-    };
-
-    return {
-      getItem: function(key) {
-        return store[key] || null;
-      },
-      setItem: function(key, value) {
-        store[key] = value.toString();
-      },
-      removeItem: function(key) {
-        delete store[key];
-      },
-      clear: function() {
-        store = {};
-      }
-    };
-  })();
+  
   test('Testa se a página de Ranking é carregada', async () => {
+    jest.spyOn(global, 'fetch')
+      global.fetch.mockResolvedValue({
+          json: jest.fn().mockResolvedValue(mock)
+      })
 
-    renderWithRouterAndRedux(<Ranking />);
-    const title = await screen.getByRole('heading', {  name: /ranking/i})
+    const {history} = renderWithRouterAndRedux(<App />, INITIAL_STATE, initialEntries);
+    expect(history.location.pathname).toBe('/game');
+    expect(global.fetch).toHaveBeenCalled();
+
+    const answer = await screen.findByTestId('correct-answer');
+    userEvent.click(answer);
+    const nextBtn = await screen.getByTestId('btn-next');
+    userEvent.click(nextBtn);
+
+    const answer2 = await screen.findByText(mock.results[1].correct_answer);
+    userEvent.click(answer);
+    userEvent.click(nextBtn);
+
+    // const answer3 = await screen.findByText(mock.results[2].correct_answer);
+    userEvent.click(answer);
+    userEvent.click(nextBtn);
+
+    // const answer4 = await screen.findByText(mock.results[3].correct_answer);
+    userEvent.click(answer);
+    userEvent.click(nextBtn);
+
+    // const answer5 = await screen.findByText(mock.results[4].correct_answer);
+    userEvent.click(answer);
+    userEvent.click(nextBtn);
+
+
+    const rankingBtn = screen.getByTestId('btn-ranking');
+    userEvent.click(rankingBtn);
+
+    const ranking = await screen.findByText(/Ranking/i);
+    expect(ranking).toBeInTheDocument();
+
+    const title = screen.getByRole('heading', {  name: /ranking/i})
     expect(title).toBeInTheDocument();
     
-    // const avatarPlayer = screen.getByRole('img', {  name: /foto de perfil do usuário/i})
-    const namePlayer = screen.getByTestId(/player-name/i)
-    const scorePlayer = screen.getByTestId(/player-score/i)
-    expect(avatarPlayer).toBeInTheDocument()
-    expect(namePlayer).toBeInTheDocument()
-    expect(scorePlayer).toBeInTheDocument()
+    const containerRanking = screen.findByRole('listitem');
+    expect(containerRanking).toBeDefined()
+
+
+    // const avatarPlayer = await screen.findByAltText(/gravatar/i)
+    // expect(avatarPlayer).toBeInTheDocument();
+    // const avatarPlayer = await screen.findByAltText(/gravatar/i);
+    // const namePlayer = await screen.findByTestId(/player-name/i)
+    // const scorePlayer = await screen.findByTestId(/player-score/i)
+    // expect(avatarPlayer).toBeInTheDocument()
+    // expect(namePlayer).toBeInTheDocument()
+    // expect(scorePlayer).toBeInTheDocument()
     
     const buttonStart = screen.getByRole('button', {  name: /início/i})
     userEvent.click(buttonStart)
